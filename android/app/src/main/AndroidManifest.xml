@@ -26,8 +26,29 @@
   <!--如需使用人脸识别，还要添加：摄相头权限，拍照需要用到 -->
   <uses-permission android:name="android.permission.CAMERA" />
 
+  <!--阿里移动推送相关权限-->
+  <!--网络库使用，当网络操作时需要确保事务完成不被杀掉-->
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <!--选举使用，当应用有删除或者更新时需要重新选举，复用推送通道-->
+  <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+  <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+  <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+  <!--补偿通道小米PUSH使用，不用可去除-->
+  <uses-permission android:name="android.permission.GET_TASKS" />
+  <!--补偿通道GCM使用，不使用可去除-->
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <!--允许监听启动完成事件-->
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <!--允许访问震动器-->
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <!-- 允许task重排序 -->
+  <uses-permission android:name="android.permission.REORDER_TASKS" />
 
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
+    <meta-data android:name="com.alibaba.app.appkey" android:value="29212571"/>
+    <!-- 请填写你自己的- appKey -->
+    <meta-data android:name="com.alibaba.app.appsecret" android:value="7c7279aadb812a93c837702e7d2bb031"/>
+    <!-- 请填写你自己的appSecret -->
     <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -35,6 +56,20 @@
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+
+    <!-- 消息接收监听器 （用户可自主扩展） -->
+    <receiver android:name=".MyMessageReceiver" android:exported="false">      <!-- 为保证receiver安全，建议设置不可导出，如需对其他应用开放可通过android：permission进行限制 -->
+      <intent-filter>
+        <action android:name="com.textdemo.action.NOTIFICATION_OPENED" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="com.textdemo.action.NOTIFICATION_REMOVED" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+      </intent-filter>
+    </receiver>
   </application>
 
 </manifest>
